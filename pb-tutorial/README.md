@@ -1,0 +1,5 @@
+react-query
+useMutation
+useQuery
+sendinblue.com
+pocketbase.io
