@@ -1,5 +1,5 @@
-react-query
-useMutation
-useQuery
-sendinblue.com
-pocketbase.io
+- react-query
+  -- useMutation
+  -- useQuery
+- sendinblue.com
+- pocketbase.io

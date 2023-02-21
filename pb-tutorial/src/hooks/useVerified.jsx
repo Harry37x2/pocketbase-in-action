@@ -1,28 +1,27 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
 import pb from '../lib/pocketbase';
+import {useQuery} from 'react-query'
 
 const useVerified = () => {  
-    const [isVerified, setIsVerified] = useState(false);
-    useEffect(() => {
-        async function checkVerified() {
-            const id = pb.authStore.model.id
-            const userdData = await pb
-            .collection('users')
-            .getOne(id)
-            setIsVerified(userdData.verified)
+    const id = pb.authStore.model?.id;
+    async function checkVerified() {
+        if(id!==undefined){
+            const userData = await pb
+                .collection('users')
+                .getOne(id)
+            return userData.verified;
         }
-        if(pb.authStore.isValid)checkVerified();
-    },[])
-
-    async function requestVerification() {
-        const email = pb.authStore.model.email;
-        const res = await pb.collection('users')
-            .requestVerification(email)
-        if(res) alert('Veri mail sent-> check email')
+        return false
     }
+    return useQuery({queryFn: checkVerified, queryKey:['check-verified', id]})
+}
 
-    return { isVerified, requestVerification }
+export async function requestVerification() {
+    const email = pb.authStore.model.email;
+    const res = await pb
+        .collection('users')
+        .requestVerification(email)
+    if(res) alert('Veri mail sent-> check email')
 }
 
 export default useVerified
